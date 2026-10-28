@@ -12,6 +12,6 @@ UI/Ref 正式版本目前为 1.0.0；单独消费者的 Kotlin 2.2 无法读取�
 
 Maven 发布配置已记录本项目 SCM 和开发者身份，当前默认版本仍为 `0.1.0-SNAPSHOT`。生产准备期间曾在独立环境构建 `1.0.0-rc.1` 并验证四模块及独立 R8 消费；该候选及原始报告不在本仓库，不能将其作为当前源码的正式发布证据。四模块现有本地 JVM 签名参考文档制品和按需签名入口；显式缺密钥时会阻塞。正式 Central 发布仍需可验证的 GPG 签名和实际发布流程。
 
-UI Android 桥目前尚无 Central 正式工件；独立 UI 源码候选已实际消费 Android `1.0.0-rc.1`，其 10 项 host 合同和独立 Maven/R8 消费通过，UI core 解析为中央仓库 `1.0.0`。这只是本地候选证据，不代表完整 UI gate、设备行为、签名或 Central 发布已通过。
+UI Android 桥目前尚无 Central 正式工件；独立 UI 源码候选已实际消费 Android `1.0.0-rc.1`，其 10 项 host 合同和独立 Maven/R8 消费通过，UI core 解析为中央仓库 `1.0.0`。该本地候选已生成非空 JVM API 参考文档；新增文档变体后独立 Maven/R8 消费再次通过，隔离假密钥测试按预期阻塞。真实签名仍缺失。这只是本地候选证据，不代表完整 UI gate、设备行为、签名或 Central 发布已通过。
 
 工具链风险：现用 Gradle `9.8.2`、AGP `9.4.1` 与 KGP `2.4.21` 的本地组合已编译，但超出 Kotlin 官方表中 KGP 2.4.21 的完全支持上限（Gradle 9.7.0、AGP 9.3.1）。具体使用环境仍需验证，见 [Kotlin 兼容表](https://kotlinlang.org/docs/gradle-configure-project.html)。
