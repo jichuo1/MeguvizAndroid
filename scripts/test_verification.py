@@ -42,10 +42,9 @@ class GateRejectionTest(unittest.TestCase):
     def publications(self):
         for module in gate.MODULES:
             self.marker(module,'publishReleasePublicationToCandidateRepository')
-            artifact='meguviz-'+module; base=f'build/repo/io/github/jichuo1/meguviz/{artifact}/0.1.0-SNAPSHOT'
-            value='0.1.0-20261026.123000-1'
-            versions=''.join(f'<snapshotVersion><extension>{ext}</extension>'+('<classifier>sources</classifier>' if ext=='jar' else '')+f'<value>{value}</value></snapshotVersion>' for ext in ('aar','pom','jar','module'))
-            self.put(base+'/maven-metadata.xml',f'<metadata><groupId>{gate.GROUP}</groupId><artifactId>{artifact}</artifactId><version>{gate.VERSION}</version><versioning><snapshotVersions>{versions}</snapshotVersions></versioning></metadata>')
+            artifact='meguviz-'+module; artifact_root=f'build/repo/io/github/jichuo1/meguviz/{artifact}'
+            base=f'{artifact_root}/{gate.VERSION}'; value=gate.VERSION
+            self.put(artifact_root+'/maven-metadata.xml',f'<metadata><groupId>{gate.GROUP}</groupId><artifactId>{artifact}</artifactId><versioning><versions><version>{gate.VERSION}</version></versions></versioning></metadata>')
             classes=io.BytesIO()
             with zipfile.ZipFile(classes,'w') as jar: jar.writestr('example/Contract.class',b'\xca\xfe\xba\xbe\x00\x00\x00\x3dfixture')
             self.zip(f'{base}/{artifact}-{value}.aar',{'AndroidManifest.xml':'manifest','classes.jar':classes.getvalue()})
@@ -108,10 +107,10 @@ class GateRejectionTest(unittest.TestCase):
     def test_optional_resource_module_changes_source_hash(self):
         before=gate.source_hash(); self.put('android-resources-loader/src/main/java/Loader.java','// changed optional module')
         self.assertNotEqual(before,gate.source_hash())
-    def test_real_bil_fixture_changes_source_hash(self):
+    def test_real_integration_fixture_changes_source_hash(self):
         before=gate.source_hash(); self.put(gate.WINDOW_FIXTURE,'// changed real delegate')
         self.assertNotEqual(before,gate.source_hash())
-    def test_old_copied_bil_fixture_rejected(self):
+    def test_old_copied_integration_fixture_rejected(self):
         self.put(gate.WINDOW_FIXTURE,'// changed real delegate'); gate.begin_host(); self.reports('android-window')
         with self.assertRaisesRegex(ValueError,'Window compatibility fixture'): gate.inspect_tests('android-window')
     def test_api_output_is_not_self_referential_source_input(self):
@@ -137,6 +136,12 @@ class GateRejectionTest(unittest.TestCase):
     def test_forbidden_pom_dependency_rejected(self):
         self.publications(); path=gate.artifact_path('android-runtime','pom'); path.write_text(path.read_text().replace('</project>','<dependencies><dependency><groupId>com.highcapable.betterandroid</groupId><artifactId>x</artifactId><version>1</version></dependency></dependencies></project>'))
         with self.assertRaisesRegex(ValueError,'Forbidden runtime'): gate.publication()
+    def test_snapshot_pom_dependency_rejected(self):
+        self.publications(); path=gate.artifact_path('android-window','pom'); path.write_text(path.read_text().replace('<version>1.0.0</version><scope>compile</scope>','<version>0.1.0-SNAPSHOT</version><scope>compile</scope>'))
+        with self.assertRaisesRegex(ValueError,'SNAPSHOT dependency in release POM'): gate.publication()
+    def test_snapshot_gradle_metadata_dependency_rejected(self):
+        self.publications(); path=gate.artifact_path('android-window','module'); data=gate.read_json(path); data['variants'][0]['dependencies']=[{'group':gate.GROUP,'module':'meguviz-android-runtime','version':{'requires':'0.1.0-SNAPSHOT'}}]; gate.write_json(path,data)
+        with self.assertRaisesRegex(ValueError,'SNAPSHOT dependency in release Gradle metadata'): gate.publication()
     def test_empty_classes_jar_rejected(self):
         self.publications(); empty=io.BytesIO()
         with zipfile.ZipFile(empty,'w'): pass
@@ -145,9 +150,15 @@ class GateRejectionTest(unittest.TestCase):
     def test_gradle_metadata_hash_mismatch_rejected(self):
         self.publications(); path=gate.artifact_path('android-runtime','module'); data=gate.read_json(path); data['variants'][0]['files']=[]; gate.write_json(path,data)
         with self.assertRaisesRegex(ValueError,'hashes do not match'): gate.publication()
-    def test_snapshot_metadata_path_traversal_rejected(self):
-        self.publications(); path=gate.artifact_path('android-runtime','pom').parent/'maven-metadata.xml'; path.write_text(path.read_text().replace('0.1.0-20261026.123000-1','../../secret'))
-        with self.assertRaisesRegex(ValueError,'timestamped artifact'): gate.artifact_path('android-runtime','aar')
+    def test_release_metadata_path_traversal_rejected(self):
+        self.publications(); path=gate.artifact_path('android-runtime','pom').parent.parent/'maven-metadata.xml'; path.write_text(path.read_text().replace(gate.VERSION,'../../secret'))
+        with self.assertRaisesRegex(ValueError,'Invalid publication release metadata versions'): gate.artifact_path('android-runtime','aar')
+    def test_release_metadata_wrong_component_rejected(self):
+        self.publications(); path=gate.artifact_path('android-runtime','pom').parent.parent/'maven-metadata.xml'; path.write_text(path.read_text().replace(gate.GROUP,'wrong.group'))
+        with self.assertRaisesRegex(ValueError,'Incorrect publication metadata coordinates'): gate.artifact_path('android-runtime','aar')
+    def test_release_metadata_duplicate_version_rejected(self):
+        self.publications(); path=gate.artifact_path('android-runtime','pom').parent.parent/'maven-metadata.xml'; path.write_text(path.read_text().replace('</versions>',f'<version>{gate.VERSION}</version></versions>'))
+        with self.assertRaisesRegex(ValueError,'Invalid publication release metadata versions'): gate.artifact_path('android-runtime','aar')
     def test_old_api_dump_rejected(self):
         self.publications(); self.api(); path=gate.ROOT/'build/verification/api.json'; data=gate.read_json(path); data['modules']['android-runtime']['aar_sha256']='0'*64; gate.write_json(path,data)
         with self.assertRaisesRegex(ValueError,'stale or empty AAR'): gate.inspect_api()
@@ -221,7 +232,7 @@ class GateRejectionTest(unittest.TestCase):
         release=gate.read_json(gate.ROOT/'verification/gates/release.json')
         self.assertEqual('BLOCKED',next(c for c in release['checks'] if c['name']=='bridge')['status'])
 
-    def test_core_candidate_has_no_future_bil_or_upgrade_cycle(self):
+    def test_core_candidate_has_no_future_integration_or_upgrade_cycle(self):
         with patch.object(gate,'verify_gate',side_effect=lambda name: {'name':name,'status':'PASS'}) as check:
             with contextlib.redirect_stdout(io.StringIO()): self.assertEqual(0,gate.release('core-candidate'))
         self.assertEqual(['host','device','performance-core'],[c.args[0] for c in check.call_args_list])

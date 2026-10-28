@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 MODULES = ('android-runtime', 'android-window', 'android-lifecycle')
 TEST_MODULES = MODULES + ('android-resources-loader',)
 GROUP = 'io.github.jichuo1.meguviz'
-VERSION = '0.1.0-SNAPSHOT'
+VERSION = '1.0.0'
 FORBIDDEN = ('com.highcapable.betterandroid', 'com.highcapable.hikage', 'com.highcapable.kavaref',
              'io.github.libxposed', 'LumenCoacervationEngine')
 FORBIDDEN_API = FORBIDDEN + ('io.github.jichuo1.meguviz.android.testfixture', 'meguviz.ui.', 'meguviz.ref.', 'meguviz.dex.')
@@ -173,17 +173,19 @@ def inspect_lint(module: str) -> dict:
 def artifact_path(module: str, extension: str, classifier: str = '') -> Path:
     if module not in MODULES or extension not in ('aar','pom','jar','module') or classifier not in ('','sources'):
         raise ValueError('Unknown publication artifact')
-    artifact = f'meguviz-{module}'; directory = ROOT/'build/repo/io/github/jichuo1/meguviz'/artifact/VERSION
-    metadata = directory/'maven-metadata.xml'
+    artifact = f'meguviz-{module}'
+    artifact_root = ROOT/'build/repo/io/github/jichuo1/meguviz'/artifact
+    directory = artifact_root/VERSION
+    metadata = artifact_root/'maven-metadata.xml'
     if not metadata.is_file(): raise ValueError(f'Missing publication metadata: {metadata}')
     document = ET.parse(metadata).getroot()
-    if any(document.findtext(key) != value for key,value in [('groupId',GROUP),('artifactId',artifact),('version',VERSION)]):
+    if document.tag != 'metadata' or any(document.findtext(key) != value for key,value in [('groupId',GROUP),('artifactId',artifact)]):
         raise ValueError('Incorrect publication metadata coordinates')
-    candidates = [s.findtext('value') for s in document.findall('./versioning/snapshotVersions/snapshotVersion')
-                  if s.findtext('extension') == extension and (s.findtext('classifier') or '') == classifier]
-    if len(candidates) != 1 or not re.fullmatch(r'0\.1\.0-\d{8}\.\d{6}-\d+', candidates[0] or ''):
-        raise ValueError(f'Missing or ambiguous timestamped artifact: {extension}/{classifier}')
-    return directory/f'{artifact}-{candidates[0]}{("-"+classifier) if classifier else ""}.{extension}'
+    versions = [node.text or '' for node in document.findall('./versioning/versions/version')]
+    if (not versions or len(versions) != len(set(versions)) or versions.count(VERSION) != 1 or
+            any(not re.fullmatch(r'[0-9A-Za-z][0-9A-Za-z._-]{0,80}', version) or '..' in version for version in versions)):
+        raise ValueError('Invalid publication release metadata versions')
+    return directory/f'{artifact}-{VERSION}{("-"+classifier) if classifier else ""}.{extension}'
 
 def inspect_pom(path: Path, module: str):
     root = ET.parse(path).getroot()
@@ -192,6 +194,7 @@ def inspect_pom(path: Path, module: str):
         if root.findtext('{*}'+key) != value: raise ValueError(f'Incorrect POM {key}: {path}')
     dependencies = [(d.findtext('{*}groupId'),d.findtext('{*}artifactId'),d.findtext('{*}version')) for d in root.findall('./{*}dependencies/{*}dependency')]
     if any(not all(d) for d in dependencies): raise ValueError('Incomplete POM dependency')
+    if any('SNAPSHOT' in version.upper() for _,_,version in dependencies): raise ValueError('SNAPSHOT dependency in release POM')
     if any(value in path.read_text() for value in FORBIDDEN): raise ValueError('Forbidden runtime dependency in POM')
     required = {'android-window':'meguviz-android-runtime','android-lifecycle':'meguviz-android-window'}.get(module)
     if required and (GROUP,required,VERSION) not in dependencies: raise ValueError('Missing required transitive runtime dependency')
@@ -221,6 +224,7 @@ def publication(require_run: bool = False) -> dict:
         if (component.get('group'),component.get('module'),component.get('version')) != (GROUP,f'meguviz-{module}',VERSION): raise ValueError('Incorrect Gradle module coordinates')
         declared = {f.get('sha256') for variant in metadata.get('variants',[]) for f in variant.get('files',[])}
         if not {sha(paths[('aar','')]),sha(paths[('jar','sources')])} <= declared: raise ValueError('Module metadata artifact hashes do not match publication')
+        if 'SNAPSHOT' in json.dumps(metadata).upper(): raise ValueError('SNAPSHOT dependency in release Gradle metadata')
         if any(value in json.dumps(metadata) for value in FORBIDDEN): raise ValueError('Forbidden Gradle module dependency')
     return dict(name='local-publication', status='PASS', artifacts=files, bytecode_classes=counts)
 

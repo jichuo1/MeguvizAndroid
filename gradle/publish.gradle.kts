@@ -56,7 +56,7 @@ configure<PublishingExtension> {
             artifactId = "meguviz-${project.name}"
             pom {
                 name.set(artifactId)
-                description.set("MVX-1 scoped Android lifecycle, resources and scheduling. Development candidate; consult verification receipts.")
+                description.set("MVX-1 scoped Android lifecycle, resources and scheduling.")
                 url.set("https://github.com/jichuo1/MeguvizAndroid")
                 licenses { license { name.set("Apache License 2.0"); url.set("https://www.apache.org/licenses/LICENSE-2.0") } }
                 developers { developer { id.set("jichuo1"); name.set("jichuo1") } }
