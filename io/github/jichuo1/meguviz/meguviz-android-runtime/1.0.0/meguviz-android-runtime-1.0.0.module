@@ -1,0 +1,96 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "io.github.jichuo1.meguviz",
+    "module": "meguviz-android-runtime",
+    "version": "1.0.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "9.8.2"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.2.10"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "meguviz-android-runtime-1.0.0.aar",
+          "url": "meguviz-android-runtime-1.0.0.aar",
+          "size": 64359,
+          "sha512": "34308de7c2b2dd32f7ca51883cf322ad040737df06002b18e3698919d14d4ed565f5ad84cf9f34ecc20e0fd759336d34b476a5afc94de729aba7f0588f3d3262",
+          "sha256": "b278451c2ca6ce34e31a81f9632bfa6f25b1ca3483b6ecf4ebd29b9a8c10dfee",
+          "sha1": "aa5564bbb178650b0ce0cfba48791036142cda4b",
+          "md5": "fb4262d84991df90ea1f098037e97ec7"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.2.10"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "meguviz-android-runtime-1.0.0.aar",
+          "url": "meguviz-android-runtime-1.0.0.aar",
+          "size": 64359,
+          "sha512": "34308de7c2b2dd32f7ca51883cf322ad040737df06002b18e3698919d14d4ed565f5ad84cf9f34ecc20e0fd759336d34b476a5afc94de729aba7f0588f3d3262",
+          "sha256": "b278451c2ca6ce34e31a81f9632bfa6f25b1ca3483b6ecf4ebd29b9a8c10dfee",
+          "sha1": "aa5564bbb178650b0ce0cfba48791036142cda4b",
+          "md5": "fb4262d84991df90ea1f098037e97ec7"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseSourcePublication",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "meguviz-android-runtime-1.0.0-sources.jar",
+          "url": "meguviz-android-runtime-1.0.0-sources.jar",
+          "size": 26436,
+          "sha512": "e02c948839702f33011643dac8c612bc5c22916a953c09174fb19fa9b7d11ffcbb8d7472f4992653c497711527a0064dbfcf5cda57ff9eb9b77f0c35bd079698",
+          "sha256": "06e15c5b4501895b65444d56165610889b2a774f5e6064f5a6eac2e10d2495fc",
+          "sha1": "5911b3ba8fafbd0caf94ace0842823c9073b1163",
+          "md5": "d629571f47217f1aebceed2dc8428539"
+        }
+      ]
+    }
+  ]
+}
