@@ -15,3 +15,5 @@ Maven 发布配置已记录本项目 SCM 和开发者身份，当前默认版本
 UI Android 桥目前尚无 Central 正式工件；独立 UI 源码候选已实际消费 Android `1.0.0-rc.1`，其 10 项 host 合同和独立 Maven/R8 消费通过，UI core 解析为中央仓库 `1.0.0`。该本地候选已生成非空 JVM API 参考文档；新增文档变体后独立 Maven/R8 消费再次通过，隔离假密钥测试按预期阻塞。真实签名仍缺失。这只是本地候选证据，不代表完整 UI gate、设备行为、签名或 Central 发布已通过。
 
 工具链风险：现用 Gradle `9.8.2`、AGP `9.4.1` 与 KGP `2.4.21` 的本地组合已编译，但超出 Kotlin 官方表中 KGP 2.4.21 的完全支持上限（Gradle 9.7.0、AGP 9.3.1）。具体使用环境仍需验证，见 [Kotlin 兼容表](https://kotlinlang.org/docs/gradle-configure-project.html)。
+
+下游隔离集成已实际切换到本地 Android `1.0.0-rc.1`，完成 16 项限定 host 合同、无签名 debug、R8、完整依赖图比较与新 DEX 旧依赖引用检查；该结果不是完整下游回归、设备验证或正式部署。
