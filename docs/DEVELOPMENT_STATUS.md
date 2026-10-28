@@ -17,3 +17,5 @@ UI Android 桥目前尚无 Central 正式工件；独立 UI 源码候选已实�
 工具链风险：现用 Gradle `9.8.2`、AGP `9.4.1` 与 KGP `2.4.21` 的本地组合已编译，但超出 Kotlin 官方表中 KGP 2.4.21 的完全支持上限（Gradle 9.7.0、AGP 9.3.1）。具体使用环境仍需验证，见 [Kotlin 兼容表](https://kotlinlang.org/docs/gradle-configure-project.html)。
 
 下游隔离集成已实际切换到本地 Android `1.0.0-rc.1`，完成 16 项限定 host 合同、无签名 debug、R8、完整依赖图比较与新 DEX 旧依赖引用检查；该结果不是完整下游回归、设备验证或正式部署。
+
+本地 `1.0.0` 无签名预览已完成 Android 四模块与 UI Android 桥的元数据、非空 JVM API 文档和独立 Maven/R8 消费检查。下游隔离集成完成 16 项限定合同、无签名 debug、R8、依赖图及新 DEX 旧依赖引用检查；不是完整下游回归、设备验证或已部署。真实 GPG 签名、验签与 Central 发布仍未执行。
