@@ -1,0 +1,16 @@
+.gradle/
+**/build/
+local.properties
+.idea/
+*.iml
+**/__pycache__/
+.kotlin/
+.env
+*.keystore
+*.jks
+*.p12
+*.apk
+!android-resources-loader/src/androidTest/assets/fixture-one.apk
+!android-resources-loader/src/androidTest/assets/fixture-two.apk
+verification/gates/
+verification/device-results/

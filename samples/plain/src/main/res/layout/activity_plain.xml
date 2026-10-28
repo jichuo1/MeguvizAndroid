@@ -1,0 +1,8 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root" android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:padding="16dp">
+    <TextView android:id="@+id/status" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="MeguvizAndroid" />
+    <Button android:id="@+id/rebind" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Rebind recycled row" />
+    <Button android:id="@+id/dialog" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Open independent dialog" />
+    <FrameLayout android:id="@+id/fragment" android:layout_width="match_parent" android:layout_height="wrap_content" />
+</LinearLayout>

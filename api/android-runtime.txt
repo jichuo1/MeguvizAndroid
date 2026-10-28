@@ -1,0 +1,383 @@
+Compiled from "AdapterRegistry.java"
+public final class io.github.jichuo1.meguviz.android.runtime.core.AdapterRegistry<T> {
+  public static final int SPI_MAJOR;
+  public static final int SPI_MINOR;
+  public io.github.jichuo1.meguviz.android.runtime.core.AdapterRegistry(java.util.Collection<io.github.jichuo1.meguviz.android.runtime.core.AdapterRegistry$Provider<T>>, java.util.Set<java.lang.String>, java.util.Set<java.lang.String>, java.util.Map<java.lang.String, java.lang.String>);
+  public T bind(java.lang.String);
+  public io.github.jichuo1.meguviz.android.runtime.core.AdapterRegistry$Descriptor selectedDescriptor(java.lang.String);
+  public java.util.Collection<io.github.jichuo1.meguviz.android.runtime.core.AdapterRegistry$Descriptor> descriptors();
+  public long candidateChecks();
+}
+Compiled from "AdapterRegistry.java"
+public final class io.github.jichuo1.meguviz.android.runtime.core.AdapterRegistry$Descriptor {
+  public final java.lang.String id;
+  public final java.lang.String implementationVersion;
+  public final int spiMajor;
+  public final int minimumSpiMinor;
+  public final int priority;
+  public final java.util.Set<java.lang.String> provides;
+  public final java.util.Set<java.lang.String> requires;
+  public final java.util.Set<java.lang.String> dependencies;
+  public final java.util.Set<java.lang.String> permissions;
+  public final java.lang.String threadConstraint;
+  public final java.lang.String lifecycleOwner;
+  public final java.lang.String closeResponsibility;
+  public io.github.jichuo1.meguviz.android.runtime.core.AdapterRegistry$Descriptor(java.lang.String, java.lang.String, int, int, int, java.util.Set<java.lang.String>, java.util.Set<java.lang.String>, java.util.Set<java.lang.String>, java.util.Set<java.lang.String>, java.lang.String, java.lang.String, java.lang.String);
+}
+Compiled from "AdapterRegistry.java"
+public final class io.github.jichuo1.meguviz.android.runtime.core.AdapterRegistry$Provider<T> {
+  public final io.github.jichuo1.meguviz.android.runtime.core.AdapterRegistry$Descriptor descriptor;
+  public final T implementation;
+  public io.github.jichuo1.meguviz.android.runtime.core.AdapterRegistry$Provider(io.github.jichuo1.meguviz.android.runtime.core.AdapterRegistry$Descriptor, T);
+}
+Compiled from "BindingLease.java"
+public final class io.github.jichuo1.meguviz.android.runtime.core.BindingLease implements java.lang.AutoCloseable {
+  public io.github.jichuo1.meguviz.android.runtime.core.WorkToken token();
+  public boolean isClosed();
+  public void onClose(java.lang.Runnable);
+  public void close();
+}
+Compiled from "BoundedMailbox.java"
+public final class io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox implements java.lang.AutoCloseable {
+  public io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox(io.github.jichuo1.meguviz.android.runtime.core.LifecycleScope, io.github.jichuo1.meguviz.android.runtime.core.FrameScheduler, io.github.jichuo1.meguviz.android.runtime.core.ErrorSink, int, int, int);
+  public io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Slot newSlot();
+  public io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Submission offerState(io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Slot, io.github.jichuo1.meguviz.android.runtime.core.WorkToken, java.lang.Runnable, java.lang.Runnable);
+  public io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Submission offerCommand(io.github.jichuo1.meguviz.android.runtime.core.WorkToken, java.lang.Runnable, java.lang.Runnable);
+  public io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Submission offerBatch(io.github.jichuo1.meguviz.android.runtime.core.WorkToken, java.util.List<java.lang.Runnable>, java.lang.Runnable);
+  public void setPaused(boolean);
+  public int pendingStateCount();
+  public int pendingCommandCount();
+  public boolean isClosed();
+  public java.lang.Throwable lastFailure();
+  public void onClose(java.lang.Runnable);
+  public void close();
+}
+Compiled from "BoundedMailbox.java"
+public final class io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Admission extends java.lang.Enum<io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Admission> {
+  public static final io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Admission ACCEPTED;
+  public static final io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Admission REPLACED;
+  public static final io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Admission REJECTED_CAPACITY;
+  public static final io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Admission REJECTED_CLOSED;
+  public static final io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Admission UNSUPPORTED;
+  public static io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Admission[] values();
+  public static io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Admission valueOf(java.lang.String);
+}
+Compiled from "BoundedMailbox.java"
+public final class io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Cancellation extends java.lang.Enum<io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Cancellation> {
+  public static final io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Cancellation CANCELLED;
+  public static final io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Cancellation ALREADY_RUNNING;
+  public static final io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Cancellation ALREADY_TERMINAL;
+  public static io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Cancellation[] values();
+  public static io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Cancellation valueOf(java.lang.String);
+}
+Compiled from "BoundedMailbox.java"
+final class io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Item {
+}
+Compiled from "BoundedMailbox.java"
+public final class io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Outcome extends java.lang.Enum<io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Outcome> {
+  public static final io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Outcome PENDING;
+  public static final io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Outcome RUNNING;
+  public static final io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Outcome COMPLETED;
+  public static final io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Outcome CANCELLED;
+  public static final io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Outcome SUPERSEDED;
+  public static final io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Outcome STALE;
+  public static final io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Outcome INACTIVE;
+  public static final io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Outcome FAILED;
+  public static final io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Outcome CLOSED;
+  public static io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Outcome[] values();
+  public static io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Outcome valueOf(java.lang.String);
+}
+Compiled from "BoundedMailbox.java"
+final class io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Signal implements java.lang.Runnable {
+  public void run();
+}
+Compiled from "BoundedMailbox.java"
+public final class io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Slot {
+}
+Compiled from "BoundedMailbox.java"
+public final class io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Submission {
+  public io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Admission admission();
+  public io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$WorkHandle handle();
+  public boolean accepted();
+}
+Compiled from "BoundedMailbox.java"
+final class io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Terminal {
+}
+Compiled from "BoundedMailbox.java"
+public final class io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$WorkHandle {
+  public long sequence();
+  public io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Outcome outcome();
+  public java.lang.Throwable failure();
+  public io.github.jichuo1.meguviz.android.runtime.core.BoundedMailbox$Cancellation cancel();
+}
+Compiled from "EpochDomain.java"
+public final class io.github.jichuo1.meguviz.android.runtime.core.EpochDomain implements java.lang.AutoCloseable {
+  public io.github.jichuo1.meguviz.android.runtime.core.EpochDomain(io.github.jichuo1.meguviz.android.runtime.core.OwnerDispatcher);
+  public io.github.jichuo1.meguviz.android.runtime.core.EpochDomain$Stamp stamp();
+  public boolean matches(io.github.jichuo1.meguviz.android.runtime.core.EpochDomain$Stamp);
+  public void invalidate();
+  public void close();
+}
+Compiled from "EpochDomain.java"
+public final class io.github.jichuo1.meguviz.android.runtime.core.EpochDomain$Stamp {
+  public long epoch();
+  public boolean equals(java.lang.Object);
+  public int hashCode();
+}
+Compiled from "ErrorSink.java"
+public interface io.github.jichuo1.meguviz.android.runtime.core.ErrorSink {
+  public abstract void onError(java.lang.Throwable);
+}
+Compiled from "Failures.java"
+final class io.github.jichuo1.meguviz.android.runtime.core.Failures {
+}
+Compiled from "FrameDriver.java"
+public interface io.github.jichuo1.meguviz.android.runtime.core.FrameDriver {
+  public abstract boolean request(io.github.jichuo1.meguviz.android.runtime.core.FrameDriver$Callback);
+  public abstract void remove(io.github.jichuo1.meguviz.android.runtime.core.FrameDriver$Callback);
+}
+Compiled from "FrameDriver.java"
+public interface io.github.jichuo1.meguviz.android.runtime.core.FrameDriver$Callback {
+  public abstract void onFrame(long);
+  public default void onFrame(long, long, long);
+}
+Compiled from "FrameScheduler.java"
+public final class io.github.jichuo1.meguviz.android.runtime.core.FrameScheduler implements java.lang.AutoCloseable {
+  public io.github.jichuo1.meguviz.android.runtime.core.FrameScheduler(io.github.jichuo1.meguviz.android.runtime.core.OwnerDispatcher, io.github.jichuo1.meguviz.android.runtime.core.FrameDriver, io.github.jichuo1.meguviz.android.runtime.core.ErrorSink, int);
+  public io.github.jichuo1.meguviz.android.runtime.core.FrameScheduler$FrameChannel openChannel(java.lang.Object, io.github.jichuo1.meguviz.android.runtime.core.FrameScheduler$FrameWork, int);
+  public int channelCount();
+  public boolean hasScheduledFrame();
+  public java.lang.Throwable lastFailure();
+  public void close();
+}
+Compiled from "FrameScheduler.java"
+class io.github.jichuo1.meguviz.android.runtime.core.FrameScheduler$1 implements io.github.jichuo1.meguviz.android.runtime.core.FrameDriver$Callback {
+  public void onFrame(long);
+  public void onFrame(long, long, long);
+}
+Compiled from "FrameScheduler.java"
+final class io.github.jichuo1.meguviz.android.runtime.core.FrameScheduler$BatchEntry {
+}
+Compiled from "FrameScheduler.java"
+public final class io.github.jichuo1.meguviz.android.runtime.core.FrameScheduler$FrameChannel implements java.lang.AutoCloseable {
+  public boolean isClosed();
+  public void onClose(java.lang.Runnable);
+  public void requestFrame();
+  public void cancelPending();
+  public void close();
+}
+Compiled from "FrameScheduler.java"
+public interface io.github.jichuo1.meguviz.android.runtime.core.FrameScheduler$FrameWork {
+  public abstract int drain(io.github.jichuo1.meguviz.android.runtime.core.FrameTick, int);
+}
+Compiled from "FrameTick.java"
+public final class io.github.jichuo1.meguviz.android.runtime.core.FrameTick {
+  public long sequence();
+  public long frameTimeNanos();
+  public java.lang.Long deadlineNanos();
+  public java.lang.Long expectedPresentationNanos();
+  public java.lang.String budgetSource();
+  public java.lang.Long workBudgetNanos(long, long);
+}
+Compiled from "LifecycleScope.java"
+public final class io.github.jichuo1.meguviz.android.runtime.core.LifecycleScope implements java.lang.AutoCloseable {
+  public static final int ATTACH;
+  public static final int BINDING;
+  public static final int ALL;
+  public io.github.jichuo1.meguviz.android.runtime.core.LifecycleScope(io.github.jichuo1.meguviz.android.runtime.core.OwnerDispatcher, io.github.jichuo1.meguviz.android.runtime.core.ErrorSink);
+  public io.github.jichuo1.meguviz.android.runtime.core.OwnerDispatcher dispatcher();
+  public boolean admissionClosed();
+  public boolean isClosed();
+  public boolean isActive();
+  public io.github.jichuo1.meguviz.android.runtime.core.LifecycleScope$State state();
+  public void setAttached(boolean);
+  public void setStarted(boolean);
+  public void setVisible(boolean);
+  public void rebind();
+  public io.github.jichuo1.meguviz.android.runtime.core.BindingLease lease(int, io.github.jichuo1.meguviz.android.runtime.core.EpochDomain...);
+  public boolean isCurrent(io.github.jichuo1.meguviz.android.runtime.core.WorkToken);
+  public io.github.jichuo1.meguviz.android.runtime.core.LifecycleScope$CommitResult commit(io.github.jichuo1.meguviz.android.runtime.core.WorkToken, java.lang.Runnable);
+  public io.github.jichuo1.meguviz.android.runtime.core.Registration own(io.github.jichuo1.meguviz.android.runtime.core.Registration);
+  public void release(io.github.jichuo1.meguviz.android.runtime.core.Registration);
+  public int registrationCount();
+  public java.lang.Throwable lastFailure();
+  public io.github.jichuo1.meguviz.android.runtime.core.LifecycleScope$CloseRequest requestClose();
+  public void close();
+}
+Compiled from "LifecycleScope.java"
+public final class io.github.jichuo1.meguviz.android.runtime.core.LifecycleScope$CloseRequest {
+  public io.github.jichuo1.meguviz.android.runtime.core.LifecycleScope$CloseRequest();
+  public boolean accepted();
+  public boolean completed();
+  public java.lang.Throwable failure();
+}
+Compiled from "LifecycleScope.java"
+public final class io.github.jichuo1.meguviz.android.runtime.core.LifecycleScope$CommitResult extends java.lang.Enum<io.github.jichuo1.meguviz.android.runtime.core.LifecycleScope$CommitResult> {
+  public static final io.github.jichuo1.meguviz.android.runtime.core.LifecycleScope$CommitResult COMPLETED;
+  public static final io.github.jichuo1.meguviz.android.runtime.core.LifecycleScope$CommitResult STALE;
+  public static final io.github.jichuo1.meguviz.android.runtime.core.LifecycleScope$CommitResult INACTIVE;
+  public static final io.github.jichuo1.meguviz.android.runtime.core.LifecycleScope$CommitResult FAILED;
+  public static io.github.jichuo1.meguviz.android.runtime.core.LifecycleScope$CommitResult[] values();
+  public static io.github.jichuo1.meguviz.android.runtime.core.LifecycleScope$CommitResult valueOf(java.lang.String);
+}
+Compiled from "LifecycleScope.java"
+public final class io.github.jichuo1.meguviz.android.runtime.core.LifecycleScope$State extends java.lang.Enum<io.github.jichuo1.meguviz.android.runtime.core.LifecycleScope$State> {
+  public static final io.github.jichuo1.meguviz.android.runtime.core.LifecycleScope$State CREATED;
+  public static final io.github.jichuo1.meguviz.android.runtime.core.LifecycleScope$State SUSPENDED;
+  public static final io.github.jichuo1.meguviz.android.runtime.core.LifecycleScope$State ACTIVE;
+  public static final io.github.jichuo1.meguviz.android.runtime.core.LifecycleScope$State CLOSED;
+  public static io.github.jichuo1.meguviz.android.runtime.core.LifecycleScope$State[] values();
+  public static io.github.jichuo1.meguviz.android.runtime.core.LifecycleScope$State valueOf(java.lang.String);
+}
+Compiled from "OwnerDispatcher.java"
+public interface io.github.jichuo1.meguviz.android.runtime.core.OwnerDispatcher {
+  public abstract boolean isOwnerThread();
+  public abstract boolean post(java.lang.Runnable);
+  public abstract void remove(java.lang.Runnable);
+  public default void checkOwner();
+}
+Compiled from "Registration.java"
+public final class io.github.jichuo1.meguviz.android.runtime.core.Registration implements java.lang.AutoCloseable {
+  public io.github.jichuo1.meguviz.android.runtime.core.Registration(io.github.jichuo1.meguviz.android.runtime.core.OwnerDispatcher, java.lang.Runnable);
+  public boolean isClosed();
+  public void close();
+}
+Compiled from "RetiringRegistry.java"
+public final class io.github.jichuo1.meguviz.android.runtime.core.RetiringRegistry<T> {
+  public io.github.jichuo1.meguviz.android.runtime.core.RetiringRegistry(io.github.jichuo1.meguviz.android.runtime.core.AdapterRegistry<T>, int, int, java.lang.Runnable);
+  public io.github.jichuo1.meguviz.android.runtime.core.RetiringRegistry$Lease<T> tryAcquire();
+  public boolean isClosed();
+  public io.github.jichuo1.meguviz.android.runtime.core.RetiringRegistry$Retirement<T> replace(io.github.jichuo1.meguviz.android.runtime.core.AdapterRegistry<T>, java.lang.Runnable);
+  public io.github.jichuo1.meguviz.android.runtime.core.RetiringRegistry$Retirement<T> close();
+}
+Compiled from "RetiringRegistry.java"
+public final class io.github.jichuo1.meguviz.android.runtime.core.RetiringRegistry$Lease<T> implements java.lang.AutoCloseable {
+  public io.github.jichuo1.meguviz.android.runtime.core.AdapterRegistry<T> snapshot();
+  public void close();
+}
+Compiled from "RetiringRegistry.java"
+public final class io.github.jichuo1.meguviz.android.runtime.core.RetiringRegistry$Retirement<T> {
+  public boolean isDrained();
+  public boolean tryRelease();
+  public boolean completeAfterFailure();
+}
+Compiled from "RetiringRegistry.java"
+final class io.github.jichuo1.meguviz.android.runtime.core.RetiringRegistry$Slot<T> {
+}
+Compiled from "RetiringRegistry.java"
+final class io.github.jichuo1.meguviz.android.runtime.core.RetiringRegistry$State<T> {
+}
+Compiled from "WorkToken.java"
+public final class io.github.jichuo1.meguviz.android.runtime.core.WorkToken {
+  public boolean isCurrent();
+  public boolean canCommit();
+}
+Compiled from "BudgetFrameDriver.java"
+public final class io.github.jichuo1.meguviz.android.runtime.platform.BudgetFrameDriver implements io.github.jichuo1.meguviz.android.runtime.core.FrameDriver {
+  public io.github.jichuo1.meguviz.android.runtime.platform.BudgetFrameDriver(io.github.jichuo1.meguviz.android.runtime.core.OwnerDispatcher, boolean);
+  public boolean request(io.github.jichuo1.meguviz.android.runtime.core.FrameDriver$Callback);
+  public void remove(io.github.jichuo1.meguviz.android.runtime.core.FrameDriver$Callback);
+}
+Compiled from "BudgetFrameDriver.java"
+final class io.github.jichuo1.meguviz.android.runtime.platform.BudgetFrameDriver$VsyncDriver implements io.github.jichuo1.meguviz.android.runtime.core.FrameDriver {
+  public boolean request(io.github.jichuo1.meguviz.android.runtime.core.FrameDriver$Callback);
+  public void remove(io.github.jichuo1.meguviz.android.runtime.core.FrameDriver$Callback);
+}
+Compiled from "BudgetFrameDriver.java"
+class io.github.jichuo1.meguviz.android.runtime.platform.BudgetFrameDriver$VsyncDriver$1 implements io.github.jichuo1.meguviz.android.runtime.platform.BudgetFrameDriver$VsyncDriver$Queue {
+  public void post(android.view.Choreographer$VsyncCallback);
+  public void remove(android.view.Choreographer$VsyncCallback);
+}
+Compiled from "BudgetFrameDriver.java"
+final class io.github.jichuo1.meguviz.android.runtime.platform.BudgetFrameDriver$VsyncDriver$Pending implements android.view.Choreographer$VsyncCallback {
+  public void onVsync(android.view.Choreographer$FrameData);
+}
+Compiled from "BudgetFrameDriver.java"
+interface io.github.jichuo1.meguviz.android.runtime.platform.BudgetFrameDriver$VsyncDriver$Queue {
+  public abstract void post(android.view.Choreographer$VsyncCallback);
+  public abstract void remove(android.view.Choreographer$VsyncCallback);
+}
+Compiled from "ChoreographerDriver.java"
+public final class io.github.jichuo1.meguviz.android.runtime.platform.ChoreographerDriver implements io.github.jichuo1.meguviz.android.runtime.core.FrameDriver {
+  public io.github.jichuo1.meguviz.android.runtime.platform.ChoreographerDriver(io.github.jichuo1.meguviz.android.runtime.core.OwnerDispatcher);
+  public boolean request(io.github.jichuo1.meguviz.android.runtime.core.FrameDriver$Callback);
+  public void remove(io.github.jichuo1.meguviz.android.runtime.core.FrameDriver$Callback);
+}
+Compiled from "ChoreographerDriver.java"
+class io.github.jichuo1.meguviz.android.runtime.platform.ChoreographerDriver$1 implements io.github.jichuo1.meguviz.android.runtime.platform.ChoreographerDriver$Queue {
+  public void post(android.view.Choreographer$FrameCallback);
+  public void remove(android.view.Choreographer$FrameCallback);
+}
+Compiled from "ChoreographerDriver.java"
+final class io.github.jichuo1.meguviz.android.runtime.platform.ChoreographerDriver$Pending implements android.view.Choreographer$FrameCallback {
+  public void doFrame(long);
+}
+Compiled from "ChoreographerDriver.java"
+interface io.github.jichuo1.meguviz.android.runtime.platform.ChoreographerDriver$Queue {
+  public abstract void post(android.view.Choreographer$FrameCallback);
+  public abstract void remove(android.view.Choreographer$FrameCallback);
+}
+Compiled from "MainThreadDispatcher.java"
+public final class io.github.jichuo1.meguviz.android.runtime.platform.MainThreadDispatcher implements io.github.jichuo1.meguviz.android.runtime.core.OwnerDispatcher {
+  public io.github.jichuo1.meguviz.android.runtime.platform.MainThreadDispatcher();
+  public boolean isOwnerThread();
+  public boolean post(java.lang.Runnable);
+  public void remove(java.lang.Runnable);
+}
+Compiled from "ResourceScope.java"
+public final class io.github.jichuo1.meguviz.android.runtime.resources.ResourceScope implements java.lang.AutoCloseable {
+  public io.github.jichuo1.meguviz.android.runtime.resources.ResourceScope(io.github.jichuo1.meguviz.android.runtime.core.OwnerDispatcher, android.content.Context, java.lang.String, int);
+  public io.github.jichuo1.meguviz.android.runtime.resources.ResourceState state();
+  public boolean owns(android.content.res.Resources);
+  public void refreshConfiguration();
+  public void invalidateTheme();
+  public void invalidateResources();
+  public void applyStyle(int, boolean);
+  public float spToPixels(float);
+  public void close();
+  public static io.github.jichuo1.meguviz.android.runtime.resources.ResourceSnapshot capture(android.content.Context);
+}
+Compiled from "ResourceSnapshot.java"
+public final class io.github.jichuo1.meguviz.android.runtime.resources.ResourceSnapshot {
+  public final int densityDpi;
+  public final int layoutDirection;
+  public final int uiMode;
+  public final int widthDp;
+  public final int heightDp;
+  public final int displayId;
+  public final float fontScale;
+  public final java.lang.String locales;
+  public final java.lang.String configuration;
+  public io.github.jichuo1.meguviz.android.runtime.resources.ResourceSnapshot(int, float, java.lang.String, int, int, int, int, int, java.lang.String);
+  public boolean equals(java.lang.Object);
+  public int hashCode();
+}
+Compiled from "ResourceState.java"
+public final class io.github.jichuo1.meguviz.android.runtime.resources.ResourceState implements java.lang.AutoCloseable {
+  public static final int RESOURCES;
+  public static final int THEME;
+  public static final int ALL;
+  public io.github.jichuo1.meguviz.android.runtime.resources.ResourceState(io.github.jichuo1.meguviz.android.runtime.core.OwnerDispatcher, java.lang.String, io.github.jichuo1.meguviz.android.runtime.resources.ResourceSnapshot, int);
+  public io.github.jichuo1.meguviz.android.runtime.resources.ResourceSnapshot snapshot();
+  public java.lang.String namespace();
+  public io.github.jichuo1.meguviz.android.runtime.core.EpochDomain[] dependencies(int);
+  public io.github.jichuo1.meguviz.android.runtime.resources.ResourceState$Token token(int);
+  public boolean isCurrent(io.github.jichuo1.meguviz.android.runtime.resources.ResourceState$Token);
+  public void update(io.github.jichuo1.meguviz.android.runtime.resources.ResourceSnapshot);
+  public void invalidateResources();
+  public void invalidateTheme();
+  public <T extends io.github.jichuo1.meguviz.android.runtime.resources.ResourceState$DerivedValue> T resolve(java.lang.String, java.lang.String, int, java.lang.String, int, java.lang.Class<T>, java.util.function.Supplier<T>);
+  public int cachedCount();
+  public void close();
+}
+Compiled from "ResourceState.java"
+public interface io.github.jichuo1.meguviz.android.runtime.resources.ResourceState$DerivedValue {
+}
+Compiled from "ResourceState.java"
+final class io.github.jichuo1.meguviz.android.runtime.resources.ResourceState$Key {
+  public boolean equals(java.lang.Object);
+  public int hashCode();
+}
+Compiled from "ResourceState.java"
+public final class io.github.jichuo1.meguviz.android.runtime.resources.ResourceState$Token {
+}

@@ -1,0 +1,86 @@
+package io.github.jichuo1.meguviz.android.runtime.platform;
+
+import android.annotation.TargetApi;
+import android.os.Build;
+import android.view.Choreographer;
+import io.github.jichuo1.meguviz.android.runtime.core.FrameDriver;
+import io.github.jichuo1.meguviz.android.runtime.core.OwnerDispatcher;
+import java.util.Objects;
+
+/** Opt-in frame metadata on API 33+, with the normal single driver as fallback. */
+public final class BudgetFrameDriver implements FrameDriver {
+    private final FrameDriver delegate;
+
+    public BudgetFrameDriver(OwnerDispatcher owner, boolean enabled) {
+        Objects.requireNonNull(owner).checkOwner();
+        delegate = enabled && Build.VERSION.SDK_INT >= 33 ? new VsyncDriver(owner) : new ChoreographerDriver(owner);
+    }
+
+    @Override public boolean request(Callback callback) { return delegate.request(callback); }
+    @Override public void remove(Callback callback) { delegate.remove(callback); }
+
+    @TargetApi(33)
+    static final class VsyncDriver implements FrameDriver {
+        interface Queue {
+            void post(Choreographer.VsyncCallback callback);
+            void remove(Choreographer.VsyncCallback callback);
+        }
+        private final OwnerDispatcher owner;
+        private final Queue queue;
+        private Pending pending;
+
+        private final class Pending implements Choreographer.VsyncCallback {
+            private Callback callback;
+            Pending(Callback callback) { this.callback = callback; }
+            @Override public void onVsync(Choreographer.FrameData data) {
+                if (pending != this) { callback = null; return; }
+                pending = null;
+                Callback target = callback; callback = null;
+                if (target == null) return;
+                long frame = data.getFrameTimeNanos();
+                Choreographer.FrameTimeline timeline = data.getPreferredFrameTimeline();
+                long deadline = timeline.getDeadlineNanos();
+                long presentation = timeline.getExpectedPresentationTimeNanos();
+                target.onFrame(frame, deadline, presentation);
+            }
+        }
+
+        VsyncDriver(OwnerDispatcher owner) {
+            this.owner = Objects.requireNonNull(owner); owner.checkOwner();
+            Choreographer choreographer = Choreographer.getInstance();
+            queue = new Queue() {
+                @Override public void post(Choreographer.VsyncCallback callback) { choreographer.postVsyncCallback(callback); }
+                @Override public void remove(Choreographer.VsyncCallback callback) { choreographer.removeVsyncCallback(callback); }
+            };
+        }
+        VsyncDriver(OwnerDispatcher owner, Queue queue) {
+            this.owner = Objects.requireNonNull(owner); owner.checkOwner();
+            this.queue = Objects.requireNonNull(queue);
+        }
+        @Override public boolean request(Callback callback) {
+            owner.checkOwner(); Objects.requireNonNull(callback);
+            if (pending != null) {
+                if (pending.callback != callback) throw new IllegalStateException("Driver already owned by another scheduler");
+                return true;
+            }
+            Pending request = new Pending(callback);
+            pending = request;
+            try { queue.post(request); }
+            catch (RuntimeException | Error failure) {
+                if (pending == request) pending = null;
+                request.callback = null;
+                throw failure;
+            }
+            return true;
+        }
+        @Override public void remove(Callback callback) {
+            owner.checkOwner();
+            Pending request = pending;
+            if (request != null && request.callback == callback) {
+                pending = null;
+                request.callback = null;
+                queue.remove(request);
+            }
+        }
+    }
+}

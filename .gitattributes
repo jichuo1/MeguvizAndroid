@@ -1,0 +1,5 @@
+* -text whitespace=cr-at-eol
+*.jar binary
+*.apk binary
+**/verification-metadata.xml -text whitespace=cr-at-eol
+verification/fixtures/window-compatibility/** -text whitespace=cr-at-eol

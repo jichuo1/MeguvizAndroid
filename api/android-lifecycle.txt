@@ -1,0 +1,15 @@
+Compiled from "LifecycleAdapters.java"
+public final class io.github.jichuo1.meguviz.android.lifecycle.LifecycleAdapters {
+  public static io.github.jichuo1.meguviz.android.runtime.core.Registration bindWindow(androidx.lifecycle.LifecycleOwner, io.github.jichuo1.meguviz.android.window.WindowSession);
+  public static io.github.jichuo1.meguviz.android.runtime.core.Registration bindViewOwner(androidx.lifecycle.LifecycleOwner, io.github.jichuo1.meguviz.android.window.ViewScope);
+  public static io.github.jichuo1.meguviz.android.runtime.core.Registration bindFragmentView(androidx.fragment.app.Fragment, io.github.jichuo1.meguviz.android.window.ViewScope);
+}
+Compiled from "ManualWindowOwner.java"
+public final class io.github.jichuo1.meguviz.android.lifecycle.ManualWindowOwner implements java.lang.AutoCloseable {
+  public io.github.jichuo1.meguviz.android.lifecycle.ManualWindowOwner(io.github.jichuo1.meguviz.android.window.WindowSession);
+  public void onStart();
+  public void onStop();
+  public void onVisibilityChanged(boolean);
+  public void onDismiss();
+  public void close();
+}

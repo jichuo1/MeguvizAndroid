@@ -1,0 +1,41 @@
+Compiled from "ScopedResourceLoader.java"
+public final class io.github.jichuo1.meguviz.android.resourcesloader.ScopedResourceLoader implements java.lang.AutoCloseable {
+  public static io.github.jichuo1.meguviz.android.resourcesloader.ScopedResourceLoader$OpenResult open(io.github.jichuo1.meguviz.android.runtime.resources.ResourceScope, android.content.res.Resources);
+  public void putApk(java.lang.String, android.os.ParcelFileDescriptor) throws java.io.IOException;
+  public boolean remove(java.lang.String);
+  public void invalidateExternalChange();
+  public int ownedProviderCount();
+  public void close();
+}
+Compiled from "ScopedResourceLoader.java"
+final class io.github.jichuo1.meguviz.android.resourcesloader.ScopedResourceLoader$Api30 implements io.github.jichuo1.meguviz.android.resourcesloader.ScopedResourceLoader$Backend {
+  public void attach();
+  public java.lang.Object fromApk(android.os.ParcelFileDescriptor) throws java.io.IOException;
+  public void setProviders(java.util.List<java.lang.Object>);
+  public void detach();
+  public void closeProvider(java.lang.Object);
+}
+Compiled from "ScopedResourceLoader.java"
+interface io.github.jichuo1.meguviz.android.resourcesloader.ScopedResourceLoader$Backend {
+  public abstract void attach();
+  public abstract java.lang.Object fromApk(android.os.ParcelFileDescriptor) throws java.io.IOException;
+  public abstract void setProviders(java.util.List<java.lang.Object>);
+  public abstract void detach();
+  public abstract void closeProvider(java.lang.Object);
+}
+Compiled from "ScopedResourceLoader.java"
+public final class io.github.jichuo1.meguviz.android.resourcesloader.ScopedResourceLoader$OpenFailure extends java.lang.IllegalStateException {
+  public final io.github.jichuo1.meguviz.android.resourcesloader.ScopedResourceLoader recovery;
+}
+Compiled from "ScopedResourceLoader.java"
+public final class io.github.jichuo1.meguviz.android.resourcesloader.ScopedResourceLoader$OpenResult {
+  public final io.github.jichuo1.meguviz.android.resourcesloader.ScopedResourceLoader$Status status;
+  public final io.github.jichuo1.meguviz.android.resourcesloader.ScopedResourceLoader loader;
+}
+Compiled from "ScopedResourceLoader.java"
+public final class io.github.jichuo1.meguviz.android.resourcesloader.ScopedResourceLoader$Status extends java.lang.Enum<io.github.jichuo1.meguviz.android.resourcesloader.ScopedResourceLoader$Status> {
+  public static final io.github.jichuo1.meguviz.android.resourcesloader.ScopedResourceLoader$Status OPENED;
+  public static final io.github.jichuo1.meguviz.android.resourcesloader.ScopedResourceLoader$Status UNSUPPORTED;
+  public static io.github.jichuo1.meguviz.android.resourcesloader.ScopedResourceLoader$Status[] values();
+  public static io.github.jichuo1.meguviz.android.resourcesloader.ScopedResourceLoader$Status valueOf(java.lang.String);
+}
