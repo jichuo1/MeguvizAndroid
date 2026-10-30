@@ -172,6 +172,16 @@
         ],
         "expected_cases": 4,
         "source": "android-runtime/src/test/java/io/github/jichuo1/meguviz/android/runtime/platform/FrameDriverRequestIsolationTest.java"
+      },
+      "io.github.jichuo1.meguviz.android.runtime.platform.MemoryBudgetObserverTest": {
+        "methods": [
+          "fullVersionIsRequired",
+          "snapshotKeepsProcessAndPackageValuesIndependent",
+          "observationApiCannotMutateBudgets"
+        ],
+        "sdks": [],
+        "expected_cases": 3,
+        "source": "android-runtime/src/test/java/io/github/jichuo1/meguviz/android/runtime/platform/MemoryBudgetObserverTest.java"
       }
     },
     "android-window": {

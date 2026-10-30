@@ -324,6 +324,24 @@ public final class io.github.jichuo1.meguviz.android.runtime.platform.MainThread
   public boolean post(java.lang.Runnable);
   public void remove(java.lang.Runnable);
 }
+Compiled from "MemoryBudgetApi37.java"
+final class io.github.jichuo1.meguviz.android.runtime.platform.MemoryBudgetApi37 extends io.github.jichuo1.meguviz.android.runtime.platform.MemoryBudgetObserver {
+  public io.github.jichuo1.meguviz.android.runtime.platform.MemoryBudgetObserver$Snapshot snapshot();
+  public void close();
+}
+Compiled from "MemoryBudgetObserver.java"
+public abstract class io.github.jichuo1.meguviz.android.runtime.platform.MemoryBudgetObserver implements java.lang.AutoCloseable {
+  public static io.github.jichuo1.meguviz.android.runtime.platform.MemoryBudgetObserver observeProcess(android.content.Context, android.os.Looper, java.util.function.LongConsumer);
+  public abstract io.github.jichuo1.meguviz.android.runtime.platform.MemoryBudgetObserver$Snapshot snapshot();
+  public abstract void close();
+}
+Compiled from "MemoryBudgetObserver.java"
+public final class io.github.jichuo1.meguviz.android.runtime.platform.MemoryBudgetObserver$Snapshot {
+  public final long processBudgetBytes;
+  public final long processUsageBytes;
+  public final long packageBudgetBytes;
+  public final long packageUsageBytes;
+}
 Compiled from "ResourceScope.java"
 public final class io.github.jichuo1.meguviz.android.runtime.resources.ResourceScope implements java.lang.AutoCloseable {
   public io.github.jichuo1.meguviz.android.runtime.resources.ResourceScope(io.github.jichuo1.meguviz.android.runtime.core.OwnerDispatcher, android.content.Context, java.lang.String, int);
