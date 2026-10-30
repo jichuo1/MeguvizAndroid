@@ -137,7 +137,7 @@ class GateRejectionTest(unittest.TestCase):
         self.publications(); path=gate.artifact_path('android-runtime','pom'); path.write_text(path.read_text().replace('</project>','<dependencies><dependency><groupId>com.highcapable.betterandroid</groupId><artifactId>x</artifactId><version>1</version></dependency></dependencies></project>'))
         with self.assertRaisesRegex(ValueError,'Forbidden runtime'): gate.publication()
     def test_snapshot_pom_dependency_rejected(self):
-        self.publications(); path=gate.artifact_path('android-window','pom'); path.write_text(path.read_text().replace('<version>1.0.0</version><scope>compile</scope>','<version>0.1.0-SNAPSHOT</version><scope>compile</scope>'))
+        self.publications(); path=gate.artifact_path('android-window','pom'); path.write_text(path.read_text().replace(f'<version>{gate.VERSION}</version><scope>compile</scope>','<version>0.1.0-SNAPSHOT</version><scope>compile</scope>'))
         with self.assertRaisesRegex(ValueError,'SNAPSHOT dependency in release POM'): gate.publication()
     def test_snapshot_gradle_metadata_dependency_rejected(self):
         self.publications(); path=gate.artifact_path('android-window','module'); data=gate.read_json(path); data['variants'][0]['dependencies']=[{'group':gate.GROUP,'module':'meguviz-android-runtime','version':{'requires':'0.1.0-SNAPSHOT'}}]; gate.write_json(path,data)
